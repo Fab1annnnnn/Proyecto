@@ -1,0 +1,31 @@
+@startuml
+actor Usuario
+participant "InterfazApp" as App
+participant "SistemaInscripcion" as Sistema
+participant "MateriaProxy" as Proxy
+participant "MateriaReal" as MateriaReal
+participant "EstudianteObservador" as Estudiante
+
+' Usuario selecciona la opción de inscripción
+Usuario -> App : seleccionar inscribir estudiante()
+App -> Sistema : inscribirMateria("Carlos", "Matematicas")
+
+' Sistema encuentra la materia y delega la inscripción
+Sistema -> Proxy : obtenerMateria("Matematicas")
+Proxy -> Proxy : verificarRequisitos("Carlos")
+Proxy -> MateriaReal : inscribir("Carlos")
+
+' MateriaReal procesa la inscripción
+MateriaReal -> MateriaReal : verificarCupos()
+MateriaReal -> MateriaReal : agregarEstudiante("Carlos")
+MateriaReal -> MateriaReal : notificarObservadores("Carlos se inscribió en Matematicas")
+
+' Materia notifica a los observadores
+MateriaReal -> Estudiante : actualizar("El estudiante Carlos se ha inscrito en Matematicas")
+
+' Respuesta al usuario
+MateriaReal -> Sistema : confirmación inscripción
+Sistema -> App : confirmar inscripción
+App -> Usuario : mostrar mensaje de éxito
+
+@enduml

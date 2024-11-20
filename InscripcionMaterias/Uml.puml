@@ -1,0 +1,91 @@
+@startuml
+' Clases principales
+class InterfazApp {
+    + main(args: String[])
+}
+
+class SistemaInscripcion {
+    - static instancia: SistemaInscripcion
+    - materias: List<Materia>
+    --
+    - SistemaInscripcion()
+    + static obtenerInstancia(): SistemaInscripcion
+    + agregarMateria(materia: Materia)
+    + mostrarMaterias()
+    + inscribirMateria(nombreEstudiante: String, nombreMateria: String)
+}
+
+interface Materia {
+    + getNombre(): String
+    + getCupos(): int
+    + inscribir(nombreEstudiante: String)
+    + agregarObservador(observador: Observador)
+    + notificarObservadores(mensaje: String)
+}
+
+class MateriaReal {
+    - nombre: String
+    - cupos: int
+    - inscritos: Set<String>
+    - observadores: List<Observador>
+    --
+    + MateriaReal(nombre: String, cupos: int)
+    + getNombre(): String
+    + getCupos(): int
+    + inscribir(nombreEstudiante: String)
+    + agregarObservador(observador: Observador)
+    + notificarObservadores(mensaje: String)
+}
+
+class MateriaProxy {
+    - materiaReal: MateriaReal
+    --
+    + MateriaProxy(nombre: String, cupos: int)
+    + getNombre(): String
+    + getCupos(): int
+    + inscribir(nombreEstudiante: String)
+    + agregarObservador(observador: Observador)
+    + notificarObservadores(mensaje: String)
+}
+
+class MateriaConHistorial {
+    - materiaDecorada: Materia
+    - historial: List<String>
+    --
+    + MateriaConHistorial(materia: Materia)
+    + getNombre(): String
+    + getCupos(): int
+    + inscribir(nombreEstudiante: String)
+    + agregarObservador(observador: Observador)
+    + notificarObservadores(mensaje: String)
+    + getHistorial(): List<String>
+}
+
+interface Observador {
+    + actualizar(mensaje: String)
+}
+
+class EstudianteObservador {
+    - nombre: String
+    --
+    + EstudianteObservador(nombre: String)
+    + actualizar(mensaje: String)
+}
+
+' Relaciones entre clases
+InterfazApp --> SistemaInscripcion : "instancia"
+SistemaInscripcion --> Materia : "mantiene lista de"
+MateriaReal ..|> Materia
+MateriaProxy ..|> Materia
+MateriaConHistorial ..|> Materia
+Materia ..> Observador : "notifica a"
+EstudianteObservador ..|> Observador
+MateriaProxy --> MateriaReal : "delegación"
+MateriaConHistorial --> Materia : "decoración"
+
+' Dependencias adicionales
+SistemaInscripcion o--> MateriaConHistorial : "agrega"
+SistemaInscripcion o--> MateriaProxy : "crea"
+SistemaInscripcion ..> EstudianteObservador : "asigna observadores"
+MateriaReal --> Observador : "gestiona lista"
+@enduml
