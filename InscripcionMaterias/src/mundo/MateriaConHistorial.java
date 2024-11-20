@@ -8,14 +8,16 @@ package mundo;
  *
  * @author fabian
  */
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MateriaConVerificacion implements Materia {
+public class MateriaConHistorial implements Materia {
     private Materia materiaDecorada;
+    private List<String> historial;
 
-    public MateriaConVerificacion(Materia materia) {
+    public MateriaConHistorial(Materia materia) {
         this.materiaDecorada = materia;
+        this.historial = new ArrayList<>();
     }
 
     @Override
@@ -30,16 +32,8 @@ public class MateriaConVerificacion implements Materia {
 
     @Override
     public void inscribir(String nombreEstudiante) {
-        // Lógica de verificación
-        if (materiaDecorada instanceof MateriaReal) {
-            MateriaReal materiaReal = (MateriaReal) materiaDecorada;
-            if (materiaReal.getInscritos().contains(nombreEstudiante)) {
-                System.out.println("✖ El estudiante " + nombreEstudiante + " ya está inscrito en " + materiaReal.getNombre() + ".");
-                return;
-            }
-        }
-
-        // Si no está inscrito, procede con la inscripción
+        // Registrar intento de inscripción
+        historial.add("Intento: " + nombreEstudiante + " en " + materiaDecorada.getNombre());
         materiaDecorada.inscribir(nombreEstudiante);
     }
 
@@ -52,7 +46,9 @@ public class MateriaConVerificacion implements Materia {
     public void notificarObservadores(String mensaje) {
         materiaDecorada.notificarObservadores(mensaje);
     }
+
+    public List<String> getHistorial() {
+        return historial;
+    }
 }
-
-
 

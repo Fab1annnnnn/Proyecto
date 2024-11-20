@@ -4,7 +4,7 @@ package interfaz;
 import java.util.Scanner;
 import mundo.EstudianteObservador;
 import mundo.Materia;
-import mundo.MateriaConVerificacion;
+import mundo.MateriaConHistorial;
 import mundo.MateriaProxy;
 import mundo.SistemaInscripcion;
 
@@ -21,57 +21,57 @@ public class InterfazApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // Singleton: Obtener la instancia del sistema de inscripción
         SistemaInscripcion sistema = SistemaInscripcion.obtenerInstancia();
 
-        // Crear materias con cupos y agregar al sistema
-        MateriaProxy matematicas = new MateriaProxy("Matemáticas", 2);
+        MateriaProxy matematicas = new MateriaProxy("Matematicas", 2);
         MateriaProxy historia = new MateriaProxy("Historia", 3);
-        MateriaProxy literatura = new MateriaProxy("Literatura", -1); // Ilimitada
-        
-        // Aplicar decorador para verificar inscripciones
-        Materia matematicasConVerificacion = new MateriaConVerificacion(matematicas);
-        Materia historiaConVerificacion = new MateriaConVerificacion(historia);
-        Materia literaturaConVerificacion = new MateriaConVerificacion(literatura);
+        MateriaProxy literatura = new MateriaProxy("Literatura", -1);
 
-        sistema.agregarMateria(matematicasConVerificacion);
-        sistema.agregarMateria(historiaConVerificacion);
-        sistema.agregarMateria(literaturaConVerificacion);
+        Materia matematicasConHistorial = new MateriaConHistorial(matematicas);
+        Materia historiaConHistorial = new MateriaConHistorial(historia);
+        Materia literaturaConHistorial = new MateriaConHistorial(literatura);
 
-        // Agregar observadores (Profesores)
-        EstudianteObservador estudiante1 = new EstudianteObservador("Juan");
-        EstudianteObservador estudiante2 = new EstudianteObservador("Maria");
-        matematicasConVerificacion.agregarObservador(estudiante1);
-        historiaConVerificacion.agregarObservador(estudiante2);
+        sistema.agregarMateria(matematicasConHistorial);
+        sistema.agregarMateria(historiaConHistorial);
+        sistema.agregarMateria(literaturaConHistorial);
 
-        System.out.println("Bienvenido al sistema de inscripción de materias.");
+        EstudianteObservador estudiante1 = new EstudianteObservador("Carlos");
+        EstudianteObservador estudiante2 = new EstudianteObservador("Luisa");
+
+        matematicasConHistorial.agregarObservador(estudiante1);
+        historiaConHistorial.agregarObservador(estudiante2);
 
         boolean continuar = true;
         while (continuar) {
             System.out.println("\nOpciones:");
             System.out.println("1. Ver materias disponibles");
             System.out.println("2. Inscribir estudiante en una materia");
-            System.out.println("3. Salir");
+            System.out.println("3. Ver historial de inscripciones");
+            System.out.println("4. Salir");
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
-            scanner.nextLine(); // Consumir el salto de línea
+            scanner.nextLine();
 
             switch (opcion) {
                 case 1 -> sistema.mostrarMaterias();
                 case 2 -> {
                     System.out.print("Ingrese el nombre del estudiante: ");
                     String nombreEstudiante = scanner.nextLine();
-
                     System.out.print("Ingrese el nombre de la materia a inscribir: ");
                     String nombreMateria = scanner.nextLine();
-
                     sistema.inscribirMateria(nombreEstudiante, nombreMateria);
                 }
                 case 3 -> {
-                    continuar = false;
-                    System.out.println("Cerrando el sistema de inscripción. ¡Gracias por usarlo!");
+                    System.out.println("\nHistorial de inscripciones:");
+                    System.out.println(((MateriaConHistorial) matematicasConHistorial).getHistorial());
+                    System.out.println(((MateriaConHistorial) historiaConHistorial).getHistorial());
+                    System.out.println(((MateriaConHistorial) literaturaConHistorial).getHistorial());
                 }
-                default -> System.out.println("Opción no válida. Intente de nuevo.");
+                case 4 -> {
+                    continuar = false;
+                    System.out.println("Gracias por usar el sistema.");
+                }
+                default -> System.out.println("Opción no válida.");
             }
         }
 

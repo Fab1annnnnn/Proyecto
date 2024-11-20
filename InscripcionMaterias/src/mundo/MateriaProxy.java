@@ -27,7 +27,15 @@ public class MateriaProxy implements Materia {
 
     @Override
     public void inscribir(String nombreEstudiante) {
-        System.out.println("Verificando inscripción para " + nombreEstudiante + "...");
+        System.out.println("Verificando requisitos para " + nombreEstudiante + "...");
+
+        // Verificación simple: el nombre no debe estar vacío o ser demasiado corto
+        if (nombreEstudiante == null || nombreEstudiante.trim().length() <= 2) {
+            System.out.println("✖ No se puede inscribir: nombre inválido. Debe tener más de 2 caracteres.");
+            return;
+        }
+
+        // Si pasa la verificación, delega la inscripción a la materia real
         materiaReal.inscribir(nombreEstudiante);
     }
 
@@ -41,6 +49,8 @@ public class MateriaProxy implements Materia {
         materiaReal.notificarObservadores(mensaje);
     }
 }
+
+
 
 
 

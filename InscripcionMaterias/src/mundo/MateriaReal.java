@@ -11,10 +11,8 @@ package mundo;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Set;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class MateriaReal implements Materia {
     private String nombre;
@@ -79,6 +77,7 @@ public class MateriaReal implements Materia {
         }
     }
 }
+
 
 
 
