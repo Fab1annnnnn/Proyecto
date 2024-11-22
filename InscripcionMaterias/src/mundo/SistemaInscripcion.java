@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package mundo;
 
 /**
  *
  * @author fabian
  */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class SistemaInscripcion {
     private List<Materia> materias;
 
     private SistemaInscripcion() {
-        this.materias = new ArrayList<>();
+        materias = new ArrayList<>();
     }
 
     public static SistemaInscripcion obtenerInstancia() {
@@ -26,7 +24,11 @@ public class SistemaInscripcion {
         return instancia;
     }
 
-    public void agregarMateria(Materia materia) {
+    // Agregar materia con historial
+    public void agregarMateria(String nombre, int cupos) {
+        Materia materia = new MateriaProxy(nombre, cupos);
+        // Envuelvo la materia con el decorador de historial
+        materia = new HistorialDecorador(materia);
         materias.add(materia);
     }
 
@@ -37,16 +39,27 @@ public class SistemaInscripcion {
         }
     }
 
-    public void inscribirMateria(String nombreEstudiante, String nombreMateria) {
+    public void inscribirEstudiante(String materiaNombre, Estudiante estudiante, boolean esVirtual) {
         for (Materia materia : materias) {
-            if (materia.getNombre().equalsIgnoreCase(nombreMateria)) {
-                materia.inscribir(nombreEstudiante);
+            if (materia.getNombre().equalsIgnoreCase(materiaNombre)) {
+                materia.inscribir(estudiante.getNombre(), esVirtual);
                 return;
             }
         }
-        System.out.println("✖ La materia " + nombreMateria + " no existe en el sistema.");
+        System.out.println("✖ La materia " + materiaNombre + " no existe en el sistema.");
+    }
+
+    public void mostrarHistorial(String materiaNombre) {
+        for (Materia materia : materias) {
+            if (materia.getNombre().equalsIgnoreCase(materiaNombre) && materia instanceof HistorialDecorador) {
+                ((HistorialDecorador) materia).mostrarHistorial();
+                return;
+            }
+        }
+        System.out.println("✖ No se encontró historial para la materia " + materiaNombre);
     }
 }
+
 
 
 

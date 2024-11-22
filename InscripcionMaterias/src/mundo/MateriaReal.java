@@ -1,22 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mundo;
 
-/**
- *
- * @author fabian
- */
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-
-import java.util.*;
+import java.util.Set;
 
 public class MateriaReal implements Materia {
     private String nombre;
-    private int cupos; // -1 indica cupos ilimitados
+    private int cupos;
     private Set<String> inscritos;
     private List<Observador> observadores;
 
@@ -37,12 +28,8 @@ public class MateriaReal implements Materia {
         return cupos;
     }
 
-    public Set<String> getInscritos() {
-        return inscritos;
-    }
-
     @Override
-    public void inscribir(String nombreEstudiante) {
+    public void inscribir(String nombreEstudiante, boolean esVirtual) {
         if (inscritos.contains(nombreEstudiante)) {
             System.out.println("✖ El estudiante " + nombreEstudiante + " ya está inscrito en " + nombre + ".");
             return;
@@ -59,9 +46,8 @@ public class MateriaReal implements Materia {
             } else {
                 System.out.println("(Cupos ilimitados)");
             }
-
             // Notificar a los observadores después de la inscripción
-            notificarObservadores("El estudiante " + nombreEstudiante + " se ha inscrito en " + nombre + ".");
+            notificarObservadores("El estudiante " + nombreEstudiante + " se ha inscrito en " + nombre + " (" + (esVirtual ? "Virtual" : "Presencial") + ").");
         }
     }
 

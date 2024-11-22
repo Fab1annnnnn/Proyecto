@@ -8,18 +8,14 @@ package mundo;
  *
  * @author fabian
  */
-public class EstudianteObservador implements Observador {
+public class Estudiante {
     private String nombre;
 
-    public EstudianteObservador(String nombre) {
+    public Estudiante(String nombre) {
         this.nombre = nombre;
     }
 
-    @Override
-    public void actualizar(String mensaje) {
-        System.out.println("📢 " + nombre + " recibió la notificación: " + mensaje);
+    public String getNombre() {
+        return nombre;
     }
 }
-
-
-

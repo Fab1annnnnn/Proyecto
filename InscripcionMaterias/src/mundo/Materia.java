@@ -8,16 +8,15 @@ package mundo;
  *
  * @author fabian
  */
-import java.util.ArrayList;
-import java.util.List;
 
 public interface Materia {
     String getNombre();
     int getCupos();
-    void inscribir(String nombreEstudiante);
+    void inscribir(String nombreEstudiante, boolean esVirtual);
     void agregarObservador(Observador observador);
     void notificarObservadores(String mensaje);
 }
+
 
 
 

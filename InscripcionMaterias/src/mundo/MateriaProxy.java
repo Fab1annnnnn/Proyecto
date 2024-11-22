@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package mundo;
 
-/**
- *
- * @author fabian
- */
 public class MateriaProxy implements Materia {
     private MateriaReal materiaReal;
 
@@ -26,7 +18,7 @@ public class MateriaProxy implements Materia {
     }
 
     @Override
-    public void inscribir(String nombreEstudiante) {
+    public void inscribir(String nombreEstudiante, boolean esVirtual) {
         System.out.println("Verificando requisitos para " + nombreEstudiante + "...");
 
         // Verificación simple: el nombre no debe estar vacío o ser demasiado corto
@@ -36,7 +28,7 @@ public class MateriaProxy implements Materia {
         }
 
         // Si pasa la verificación, delega la inscripción a la materia real
-        materiaReal.inscribir(nombreEstudiante);
+        materiaReal.inscribir(nombreEstudiante, esVirtual);
     }
 
     @Override
@@ -49,6 +41,7 @@ public class MateriaProxy implements Materia {
         materiaReal.notificarObservadores(mensaje);
     }
 }
+
 
 
 
